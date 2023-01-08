@@ -1,6 +1,7 @@
 import { Entity } from './entity'
 import { World } from './world'
 import { EventNotifier } from '../utils/eventNotifier'
+import { assert } from '../utils/assertion'
 
 export class Family {
   private readonly entities: Set<Entity>
@@ -31,6 +32,11 @@ export class Family {
 
   public get entityIterator(): IterableIterator<Entity> {
     return this.entities[Symbol.iterator]()
+  }
+
+  public getSingleton(): Entity {
+    assert(this.entities.size == 1, 'family not singleton')
+    return this.entityIterator.next().value
   }
 
   private onEntityAdded(entity: Entity): void {
