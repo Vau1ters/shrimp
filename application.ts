@@ -5,7 +5,7 @@ import * as PIXI from 'pixi.js'
 export const windowSize = {
   width: 320,
   height: 240,
-  backgroundColor: 0x1199aa
+  backgroundColor: 0x000000
 }
 
 export const application = new PIXI.Application({

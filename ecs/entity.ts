@@ -20,7 +20,16 @@ export class Entity {
   }
 
   public hasComponent(componentName: string): boolean {
-    return this.componentMap.get(componentName) !== undefined
+    return this.componentMap.has(componentName)
+  }
+
+  public hasComponents(componentNames: string[]): boolean {
+    for (const name of componentNames) {
+      if (!this.componentMap.has(name)) {
+        return false
+      }
+    }
+    return true
   }
 
   public getComponent(componentName: string): Component {
