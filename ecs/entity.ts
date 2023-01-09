@@ -45,8 +45,8 @@ export class Entity {
     this.componentChangedEvent.notify(this)
   }
 
-  public removeComponent<T extends Component>(component: T): void {
+  public removeComponent(componentName: string): void {
+    this.componentMap.delete(componentName)
     this.componentChangedEvent.notify(this)
-    this.componentMap.delete(component.constructor.name)
   }
 }
