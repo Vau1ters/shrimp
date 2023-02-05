@@ -1,4 +1,4 @@
-import { Component } from './component'
+import { Component, Constructor, ConstructorTuple } from './component'
 import { EventNotifier } from '../utils/eventNotifier'
 import { assert } from '../utils/assertion'
 
@@ -19,23 +19,30 @@ export class Entity {
     return this._id
   }
 
-  public hasComponent(componentName: string): boolean {
-    return this.componentMap.has(componentName)
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  public hasComponent<T extends Component>(component: Constructor<T>): boolean {
+    return this.componentMap.has(component.name)
   }
 
-  public hasComponents(componentNames: string[]): boolean {
-    for (const name of componentNames) {
-      if (!this.componentMap.has(name)) {
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  public hasComponents<T extends Component[]>(components: ConstructorTuple<T>): boolean {
+    for (const component of components) {
+      if (!this.hasComponent(component)) {
         return false
       }
     }
     return true
   }
 
-  public getComponent(componentName: string): Component {
-    const result = this.componentMap.get(componentName)
-    assert(result, `Missing component '${componentName}'`)
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  public getComponent<T extends Component>(component: Constructor<T>): T {
+    const result = this.componentMap.get(component.name) as T
+    assert(result, `Missing component '${component.name}'`)
     return result
+  }
+
+  public getComponents<T extends Component[]>(components: ConstructorTuple<T>): T {
+    return components.map(<V extends Component>(component: Constructor<V>): V => this.getComponent(component)) as T
   }
 
   public addComponent<T extends Component>(component: T): void {
@@ -45,8 +52,9 @@ export class Entity {
     this.componentChangedEvent.notify(this)
   }
 
-  public removeComponent(componentName: string): void {
-    this.componentMap.delete(componentName)
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  public removeComponent<T extends Component>(component: Constructor<T>): void {
+    this.componentMap.delete(component.name)
     this.componentChangedEvent.notify(this)
   }
 }

@@ -31,19 +31,14 @@ export class World {
 
 
 
-  public addEntity(entity: Entity): void
-  public addEntity(entities: Entity[]): void
+  public addEntity(entity: Entity): void {
+    this.entities[entity.id] = entity
+    this.entityAddedEvent.notify(entity)
+  }
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  public addEntity(val: any): void {
-    if (Object.prototype.toString.call(val) === '[object Array]')
-    {
-      for (const entity of val) {
-        this.addEntity(entity)
-      }
-    } else {
-      this.entities[val.id] = val
-      this.entityAddedEvent.notify(val)
+  public addEntities(entities: Entity[]): void {
+    for (const entity of entities) {
+      this.addEntity(entity)
     }
   }
 
