@@ -54,7 +54,7 @@ export class Family<I extends Component[], E extends Component[]> implements Ite
       }
     } else {
       this.iterRet.done = next.done
-      this.iterRet.value =  next.value.getComponents(this.includeComponents)
+      this.iterRet.value =  next.value?.getComponents(this.includeComponents)
       return this.iterRet
     }
   }
