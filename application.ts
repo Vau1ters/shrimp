@@ -22,6 +22,12 @@ export const applicationSetting: {
 
 export const windowResizeEvent = new EventNotifier<void>()
 
+let scale = 1
+
+export const getScreenScale = () => {
+  return scale
+}
+
 export const initializeApplication = (): void => {
   const container = document.getElementById('container')
   if (!container) {
@@ -32,11 +38,12 @@ export const initializeApplication = (): void => {
   PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST
   PIXI.settings.ROUND_PIXELS = true
   application.ticker.maxFPS = 60
+  application.stage.sortableChildren = true
 
   const onResizeCallback = (): void => {
     const rect = container.getBoundingClientRect()
 
-    let scale =
+    scale =
       Math.min(rect.width / windowSize.width, rect.height / windowSize.height) * devicePixelRatio
     if (applicationSetting.screenScaleMode === 'Integer') {
       scale = Math.floor(scale)

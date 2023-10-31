@@ -15,3 +15,7 @@ export const calcLength = (x: number, y: number): number => {
 export const calcLengthSq = (x: number, y: number): number => {
   return x * x + y * y
 }
+
+export const lerp = (p1: number, p2: number, ratio: number): number => {
+  return p1 + (p2 - p1) * ratio
+}

@@ -50,7 +50,7 @@ export class Family<I extends Component[], E extends Component[]> implements Ite
     if (this.iterRet === undefined) {
       return this.iterRet = {
         done: next.done,
-        value: next.value.getComponents(this.includeComponents)
+        value: next.value?.getComponents(this.includeComponents)
       }
     } else {
       this.iterRet.done = next.done
@@ -82,6 +82,10 @@ export class Family<I extends Component[], E extends Component[]> implements Ite
   public getSingleton(): Entity {
     assert(this.entities.size == 1, 'family not singleton')
     return this.entityIterator.next().value
+  }
+
+  public hasNoMember(): boolean {
+    return this.entities.size == 0
   }
 
   private onEntityAdded(entity: Entity): void {
